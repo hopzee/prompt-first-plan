@@ -14,12 +14,13 @@ from sqlalchemy.orm import Session
 
 from farmtrace import domain
 from farmtrace.authentication.permissions import CurrentUser, require_admin, require_authenticated
+from farmtrace.errors import PermissionDenied
 from farmtrace.database import repository
 from farmtrace.database.models import Driver, ProduceBatch, TransportHistory, TransportRequest, User, UserRole
 from farmtrace.services import farmer_service, transport_service
 from farmtrace.services.farmer_service import BatchFilters
 from farmtrace.services.transport_service import RequestFilters
-from farmtrace.utils.helpers import ensure_utc, to_local
+from farmtrace.utils.helpers import to_local
 
 TRANSPORT_COLUMNS = [
     "Request number", "Batch number", "Produce", "Quantity", "Unit", "Farm", "State", "Pickup location",
@@ -203,13 +204,11 @@ def delivery_performance(report: pd.DataFrame) -> pd.DataFrame:
 def actor_can_report(actor: CurrentUser | None) -> CurrentUser:
     actor = require_authenticated(actor)
     if not actor.has_role(domain.ROLE_ADMIN, domain.ROLE_FARMER, domain.ROLE_DRIVER):
-        from farmtrace.errors import PermissionDenied
-
         raise PermissionDenied("Reports are available to farmers, drivers and administrators.")
     return actor
 
 
 __all__ = [
-    "admin_metrics", "batch_report", "delivery_performance", "ensure_utc", "history_report",
+    "actor_can_report", "admin_metrics", "batch_report", "delivery_performance", "history_report",
     "requests_per_day", "status_distribution", "to_csv_bytes", "transport_report",
 ]
