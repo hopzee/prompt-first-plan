@@ -223,7 +223,7 @@ def bootstrap_administrator(
     existing = repository.get_user_by_email(session, email)
     if existing is not None:
         if domain.ROLE_ADMIN not in existing.role_names:
-            session.add(UserRole(user_id=existing.id, role=domain.ROLE_ADMIN))
+            existing.roles.append(UserRole(role=domain.ROLE_ADMIN))
         existing.is_active = True
         session.flush()
         record_audit(

@@ -94,9 +94,8 @@ def grant_role(session: Session, actor: CurrentUser | None, user_id: int, role: 
     user = _get_user(session, user_id)
     if role in user.role_names:
         raise ValidationError("The user already has this role.")
-    session.add(UserRole(user_id=user.id, role=role, assigned_by_user_id=actor.id))
+    user.roles.append(UserRole(role=role, assigned_by_user_id=actor.id))
     session.flush()
-    session.expire(user, ["roles"])
     record_audit(
         session, actor_user_id=actor.id, action="role_granted", target_type="user", target_id=user.id,
         details={"role": role, "email": user.email},
