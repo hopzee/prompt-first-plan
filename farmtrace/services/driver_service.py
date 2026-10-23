@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from sqlalchemy import func, or_, select
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session, joinedload, selectinload
+from sqlalchemy.orm import Session, joinedload
 
 from farmtrace import domain
 from farmtrace.authentication.auth import DriverDetails
@@ -172,5 +172,4 @@ __all__ = [
     "list_drivers",
     "set_availability",
     "update_driver_profile",
-    "selectinload",
 ]
