@@ -5,7 +5,6 @@ import streamlit as st
 from farmtrace.authentication import auth
 from farmtrace.components import runtime
 from farmtrace.components.dashboard_cards import key_values, page_header
-from farmtrace.utils.helpers import format_datetime
 
 user = runtime.current_user()
 
@@ -44,7 +43,6 @@ else:
         if st.form_submit_button("Update password", type="primary"):
             runtime.act(lambda s: auth.change_password(s, user, current, new, confirm),
                         success="Password updated.")
-    st.caption(f"Signed in · local time {format_datetime(None) if False else ''}".strip(" ·"))
     if st.button("Sign out", icon=":material/logout:"):
         runtime.sign_out()
         st.rerun()
