@@ -109,19 +109,20 @@ def register_user(session: Session, data: RegistrationData) -> CurrentUser:
     if repository.get_user_by_email(session, email) is not None:
         raise ValidationError("An account with this email address already exists. Try signing in instead.")
 
+    # Account, profile, role and (for drivers) the driver record are written in the
+    # caller's single transaction: they are committed together or not at all.
     try:
-        with session.begin_nested():
-            user = _create_account(
-                session, full_name=full_name, email=email, password=password, phone=phone, roles=(data.role,)
-            )
-            if data.role == domain.ROLE_DRIVER and data.driver is not None:
-                from farmtrace.services.driver_service import insert_driver_record
+        user = _create_account(
+            session, full_name=full_name, email=email, password=password, phone=phone, roles=(data.role,)
+        )
+        if data.role == domain.ROLE_DRIVER and data.driver is not None:
+            from farmtrace.services.driver_service import insert_driver_record
 
-                insert_driver_record(session, user_id=user.id, details=data.driver)
-            record_audit(
-                session, actor_user_id=user.id, action="user_registered", target_type="user", target_id=user.id,
-                details={"role": data.role},
-            )
+            insert_driver_record(session, user_id=user.id, details=data.driver)
+        record_audit(
+            session, actor_user_id=user.id, action="user_registered", target_type="user", target_id=user.id,
+            details={"role": data.role},
+        )
     except IntegrityError:
         raise ConflictError(
             "These details are already registered (email, licence number or vehicle registration)."
