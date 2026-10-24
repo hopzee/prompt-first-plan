@@ -108,7 +108,7 @@ def list_farms(
     session: Session, actor: CurrentUser | None, *, search: str | None = None, active_only: bool = False
 ) -> list[Farm]:
     actor = require_role(actor, domain.ROLE_FARMER, domain.ROLE_ADMIN)
-    stmt = select(Farm).options(joinedload(Farm.farmer)).order_by(Farm.farm_name)
+    stmt = select(Farm).options(joinedload(Farm.farmer).joinedload(User.profile)).order_by(Farm.farm_name)
     if not actor.is_admin:
         stmt = stmt.where(Farm.farmer_user_id == actor.id)
     if active_only:
@@ -240,7 +240,7 @@ def list_batches(session: Session, actor: CurrentUser | None, filters: BatchFilt
     filters = filters or BatchFilters()
     stmt = (
         select(ProduceBatch)
-        .options(joinedload(ProduceBatch.farm), joinedload(ProduceBatch.farmer))
+        .options(joinedload(ProduceBatch.farm), joinedload(ProduceBatch.farmer).joinedload(User.profile))
         .join(Farm, Farm.id == ProduceBatch.farm_id)
         .order_by(ProduceBatch.created_at.desc(), ProduceBatch.id.desc())
     )
