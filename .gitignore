@@ -30,3 +30,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python / FarmTrace
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets — never commit real credentials
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml

@@ -138,3 +138,14 @@ def test_migrated_database_is_ready(engine, is_postgres):
 
 def test_logs_redact_connection_passwords():
     assert redact("connecting to postgresql://farm:pa55word@db.host/ft") == "connecting to postgresql://farm:***@db.host/ft"
+
+
+def test_admin_lists_show_owner_names_after_the_session_closes(session, admin, farmer, batch):
+    """Pages read results after their transaction ends, so owner names must be pre-loaded."""
+    from farmtrace.services import farmer_service
+
+    batches = farmer_service.list_batches(session, admin)
+    farms = farmer_service.list_farms(session, admin)
+    session.close()
+    assert batches[0].farmer.full_name == "Adebayo Ogunleye"
+    assert farms[0].farmer.full_name == "Adebayo Ogunleye"
