@@ -1,0 +1,16 @@
+# FarmTrace — Python dependencies (Python 3.11+)
+# Install with:  pip install -r requirements.txt
+
+streamlit>=1.50,<2
+SQLAlchemy>=2.0.36,<2.1
+alembic>=1.14,<2
+psycopg[binary]>=3.2,<4
+argon2-cffi>=23.1
+qrcode[pil]>=8.0
+pillow>=10.4
+pandas>=2.2
+plotly>=5.24
+python-dotenv>=1.0
+
+# Testing
+pytest>=8.3
