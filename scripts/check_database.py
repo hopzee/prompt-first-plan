@@ -11,8 +11,6 @@ from __future__ import annotations
 from _common import fail, load_ready_database
 from sqlalchemy import text
 
-from farmtrace.config.settings import Settings  # noqa: F401  (import check)
-
 
 def main() -> None:
     settings, factory, status = load_ready_database()

@@ -110,7 +110,7 @@ def check_database_ready(engine: Engine) -> DatabaseStatus:
                     False,
                     "not_migrated",
                     "The database is reachable but its tables have not been created. "
-                    "Run `alembic upgrade head` (see README, section 13).",
+                    "Run `alembic upgrade head` (see the README section *Database setup*).",
                     None,
                     head,
                 )
