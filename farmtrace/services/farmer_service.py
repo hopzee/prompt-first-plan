@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session, joinedload
 from farmtrace import domain
 from farmtrace.authentication.permissions import CurrentUser, ensure_owner_or_admin, require_role
 from farmtrace.database import repository
-from farmtrace.database.models import Farm, ProduceBatch, TransportRequest
+from farmtrace.database.models import Farm, ProduceBatch, TransportRequest, User
 from farmtrace.errors import ConflictError, NotFoundError, PermissionDenied, ValidationError
 from farmtrace.services.audit_service import record_audit
 from farmtrace.services.qr_service import generate_qr_token
