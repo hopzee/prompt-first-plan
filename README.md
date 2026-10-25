@@ -172,7 +172,7 @@ APP_ENV=demo DATABASE_URL=postgresql://.../farmtrace_demo python scripts/load_de
 ```
 
 Every demo record is flagged `is_demo`, demo accounts use `@example.com` addresses, and the app shows a
-"DEMO" label. The script refuses to run when `APP_ENV=production` and cannot be loaded twice.
+"DEMO RECORD" label on them. The script refuses to run when `APP_ENV=production` and cannot be loaded twice.
 
 ## 10. Deploying to Streamlit Community Cloud
 
@@ -247,7 +247,7 @@ The React preview files (`src/`, `package.json`, etc.) are harmless to Streamlit
 
 ```text
 Pending -> Approved -> Assigned -> Dispatched -> In-Transit -> Delivered
-   \__________\__________\___________\______________\--> Cancelled (by admin; farmer only before dispatch)
+   \__________\__________\___________\______________\--> Cancelled (admin: any active stage; farmer: only while Pending or Approved)
 ```
 
 Any other jump is rejected by the service layer. **Delayed** is a separate flag that can be raised and
